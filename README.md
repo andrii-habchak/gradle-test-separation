@@ -1,63 +1,51 @@
-# How to set up different types of tests using Gradle
+# How to set up different types of tests using Gradle and TestSets plugin
 
-This is a simple project to show how to set up different types of tests using Gradle and JVM Test Suite Plugin.
+This way is very short and simple.
 
-The project contains 3 types of tests:
-- Unit tests
-- Integration tests
-- End-to-end tests
+Add the plugin to your `build.gradle` file:
 
-First of all, you need to add plugin to `build.gradle` file:
-```
+```groovy
 plugins {
-    id 'jvm-test-suite'
+    id 'org.unbroken-dome.test-sets' version '4.1.0'
 }
 ```
 
-To add another type of test you need to specify it in `testing.suites` section of `build.gradle` file.
+Specify the new test sets:
 
-For instance, if you want to add a new type of test called `functional` you need to add the following line:
-```
-testing {
-    suites {
-        test {
-            useJUnitJupiter()
-        }
-        functionalTest(JvmTestSuite) {
-            dependencies {
-                implementation project()
-            }
-            targets {
-                configureEach {
-                    testTask.configure {
-                        shouldRunAfter(test)
-                    }
-                }
-            }
-        }
-    }
+```groovy
+testSets {
+    integrationTest
+    functionalTest
 }
 ```
 
-Then you need to create a new folder `functionalTest.java` in `src` folder and add your tests there.
+You don't need to include the `test` to sets because it set up by default.
 
-It's good idea to make 'check' task depend on all types of tests because 'build' runs 'check'. 
-To do that you need to add the following line:
-```
+It's a good idea to add the `test` task to the `check` task:
+
+```groovy
 tasks.named('check') {
-    dependsOn testing.suites.functionalTest
+    dependsOn integrationTest
+    dependsOn endToEndTest
 }
 ```
 
-Also, you can specify dependencies for each type of tests. 
-For instance, if you want to exclude Spring Boot Test for unit tests only:
-```
+Specify dependencies for each test set:
+
+```groovy
 dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-test' //exclude from unit tests
     }
     integrationTestImplementation 'org.springframework.boot:spring-boot-starter-test'
     endToEndTestImplementation 'org.springframework.boot:spring-boot-starter-test'
-    functionalTestImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 ```
+
+Advantages:
+- Short and simple.
+
+Disadvantages:
+- Intellij IDEA doesn't display new test sets as tests just as modules.
+
+![img.png](img.png)

@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'jvm-test-suite'
+    id 'org.unbroken-dome.test-sets' version '4.1.0'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
 }
@@ -12,41 +12,18 @@ repositories {
     mavenCentral()
 }
 
-testing {
-    suites {
-        test {
-            useJUnitJupiter()
-        }
-        integrationTest(JvmTestSuite) {
-            dependencies {
-                implementation project()
-            }
-            targets {
-                configureEach {
-                    testTask.configure {
-                        shouldRunAfter(test)
-                    }
-                }
-            }
-        }
-        endToEndTest(JvmTestSuite) {
-            dependencies {
-                implementation project()
-            }
-            targets {
-                configureEach {
-                    testTask.configure {
-                        shouldRunAfter(integrationTest)
-                    }
-                }
-            }
-        }
-    }
+test {
+    useJUnitPlatform()
+}
+
+testSets {
+    integrationTest
+    endToEndTest
 }
 
 tasks.named('check') {
-    dependsOn testing.suites.integrationTest
-    dependsOn testing.suites.endToEndTest
+    dependsOn integrationTest
+    dependsOn endToEndTest
 }
 
 
