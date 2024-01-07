@@ -14,7 +14,7 @@ plugins {
 }
 ```
 
-Create a new folder in `src` folder and add your tests there.
+Create a new folder in `src` to add your tests there.
 
     .
     ├── ...
