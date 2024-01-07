@@ -21,6 +21,15 @@ testSets {
 
 You don't need to include the `test` to sets because it set up by default.
 
+Create a new folder in `src` to add your tests there.
+    .
+    ├── ...
+    ├── src
+    │   └── integrationTest
+    │       └── com.habchak
+    │           └── YourFunctionalTest.java
+    └── ...
+
 It's a good idea to add the `test` task to the `check` task:
 
 ```groovy
@@ -30,7 +39,7 @@ tasks.named('check') {
 }
 ```
 
-Specify dependencies for each test set:
+You can specify dependencies for each test set:
 
 ```groovy
 dependencies {
