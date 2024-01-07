@@ -1,11 +1,18 @@
 # How to set up different types of tests using Gradle
 
-This is a simple project to show how to setup different types of tests using Gradle and JVM Test Suite Plugin.
+This is a simple project to show how to set up different types of tests using Gradle and JVM Test Suite Plugin.
 
 The project contains 3 types of tests:
 - Unit tests
 - Integration tests
 - End-to-end tests
+
+First of all, you need to add plugin to `build.gradle` file:
+```
+plugins {
+    id 'jvm-test-suite'
+}
+```
 
 To add another type of test you need to specify it in `testing.suites` section of `build.gradle` file.
 
